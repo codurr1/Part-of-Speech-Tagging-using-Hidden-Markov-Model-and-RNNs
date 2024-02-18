@@ -188,16 +188,16 @@ def Testing(X_test, y_test, transition_type):
     y_estimates = list(itertools.chain(*y_estimates))
     
     # Building Confusion Matrix
-    # confusion_matrix = metrics.confusion_matrix(y_test, y_estimates, labels=tags)
-    # cm_display = metrics.ConfusionMatrixDisplay(confusion_matrix = confusion_matrix, display_labels = tags)
-    # cm_display.plot()
-    # plt.show()
+    confusion_matrix = metrics.confusion_matrix(y_test, y_estimates, labels=tags)
+    cm_display = metrics.ConfusionMatrixDisplay(confusion_matrix = confusion_matrix, display_labels = tags)
+    cm_display.plot()
+    plt.show()
     
-    # # Showing Classification Report
-    # print("##########################################################")
-    # print("TRIGRAM CLASSIFICATION REPORT FOR FOLD 1\n")
-    # print(classification_report(y_test, y_estimates, labels=tags))
-    # print("##########################################################")
+    # Showing Classification Report
+    print("##########################################################")
+    print(transition_type.upper()," CLASSIFICATION REPORT FOR FOLD 1\n")
+    print(classification_report(y_test, y_estimates, labels=tags))
+    print("##########################################################")
     
     accuracy = correct / total if total > 0 else 0
     return accuracy
@@ -248,11 +248,9 @@ if __name__ == '__main__':
         df[0][i] = "^/^ " + df[0][i]
     df[0] = df[0].apply(lambda x: x.split())
 
-
     # ### Splitting Data and Labels
     X = []
     Y = []
-
     for i in range(n_ex):
         x = ["/".join(word.split("/")[:-1]) for word in df[0][i]]
         y = [word.split("/")[-1] for word in df[0][i]]
@@ -264,14 +262,7 @@ if __name__ == '__main__':
 
     # ### Getting Training and Testing Accuracies
     bigram_testing_accuracies = PoSTagging(X, "Bigram")
-    # trigram_testing_accuracies = PoSTagging(X, "Trigram")
-    # print("trigram Accuracies\n")
-    # for i in range(5):
-    #     print("Fold",i+1,"\t",trigram_testing_accuracies[i])
-    # print(bigram_testing_accuracies)
-    # print(trigram_testing_accuracies)
-    
-    # RNN
-    
-    
+    trigram_testing_accuracies = PoSTagging(X, "Trigram") # Might take some time even with multiprocessing
+    print(bigram_testing_accuracies)
+    print(trigram_testing_accuracies)
     
